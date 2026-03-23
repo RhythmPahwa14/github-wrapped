@@ -239,6 +239,9 @@ function Slide1({ stats: s }) {
       <div style={S.roast}>
         {s.commits > 500 ? 'you committed more than you communicated this year.' : s.commits > 100 ? 'solid year. not impressive. not embarrassing.' : s.commits < 20 ? 'this is a cry for help.' : 'you existed on github. that counts.'}
       </div>
+      <div style={{ marginTop: 24, paddingTop: 18, borderTop: '1px solid #141414', fontSize: 12, color: '#777', fontFamily: "'Space Mono', monospace", textAlign: 'center' }}>
+        Made with <span style={{ color: '#ff6b35' }}>❤</span> by Rhythm Pahwa & Sandeep Vashishtha
+      </div>
     </div>
   )
 }
