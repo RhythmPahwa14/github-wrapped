@@ -9,13 +9,58 @@
 html, body {
   background: #080808;
   color: #f0f0f0;
-  font-family: 'Syne', sans-serif;
+  font-family: var(--font-exo2), sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 .grid-bg {
-  background-color: #080808;
-  background-image: 
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-  background-size: 40px 40px;
+  background-color: #0a0d0c;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.04), transparent 40%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.04) 0px,
+      rgba(255,255,255,0.04) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  background-size: auto;
+}
+
+.wrapped-bg {
+  background-color: #0a0d0c;
+  background-image:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.04), transparent 40%),
+    repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.04) 0px,
+      rgba(255,255,255,0.04) 2px,
+      transparent 2px,
+      transparent 6px
+    );
+  background-size: auto;
+}
+
+.github-logo {
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.github-logo:hover {
+  color: #ff6b35;
+  border-color: #ff6b35;
+}
+
+.badge {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 106, 42, 0.25);
+  color: #ff6a2a;
+  font-size: 12px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  backdrop-filter: blur(6px);
+  box-shadow: 
+    0 0 20px rgba(255, 106, 42, 0.08),
+    inset 0 0 10px rgba(255, 106, 42, 0.05);
 }

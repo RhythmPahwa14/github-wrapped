@@ -60,7 +60,7 @@ function analyze(data) {
 const COLORS = ['#ff6b35', '#f7c59f', '#4ade80', '#60a5fa', '#c084fc', '#fb7185']
 
 const GitHubIcon = () => (
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="#ff6b35">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
     <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z" />
   </svg>
 )
@@ -108,19 +108,19 @@ const CodeIcon = () => (
 
 const S = {
 
-  page: { minHeight: '100vh', fontFamily: "'Syne', sans-serif" },
-  nav: { borderBottom: '1px solid #141414', padding: '0 28px', height: 52, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: 'rgba(8,8,8,0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', zIndex: 50 },
-  tabs: { borderBottom: '1px solid #141414', padding: '0 28px', display: 'flex', gap: 0, overflowX: 'auto' },
+  page: { minHeight: '100vh', fontFamily: "'Exo 2', sans-serif" },
+  nav: { borderBottom: '1px solid #141414', padding: '0 28px', height: 60, display: 'flex', alignItems: 'center', justifyContent: 'space-between', position: 'sticky', top: 0, background: 'rgba(8,8,8,0.95)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', zIndex: 50 },
+  tabs: { borderBottom: '1px solid #141414', padding: '0 28px', display: 'flex', alignItems: 'flex-end', gap: 0, overflowX: 'auto', minHeight: 48 },
   main: { maxWidth: 600, margin: '0 auto', padding: '32px 20px' },
-  card: { background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 16, padding: '28px 24px' },
-  eyebrow: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#333', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 6 },
-  label: { fontSize: 13, color: '#555', fontWeight: 600, marginBottom: 8 },
+  card: { background: '#000000', border: '1px dotted rgba(255,255,255,0.35)', borderRadius: 16, padding: '28px 24px' },
+  eyebrow: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888', letterSpacing: '0.18em', textTransform: 'uppercase', marginBottom: 20, display: 'flex', alignItems: 'center', gap: 6 },
+  label: { fontSize: 13, color: '#888', fontWeight: 600, marginBottom: 8 },
   bigNum: { fontSize: 88, fontWeight: 800, letterSpacing: '-0.05em', lineHeight: 1, color: '#ffffff', marginBottom: 6 },
-  subLabel: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#333', marginBottom: 28 },
+  subLabel: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888', marginBottom: 28 },
   roast: { marginTop: 24, paddingTop: 18, borderTop: '1px solid #141414', fontSize: 14, color: '#666', fontWeight: 600, lineHeight: 1.7 },
-  statBox: { background: '#111', border: '1px solid #1a1a1a', borderRadius: 10, padding: '14px 16px' },
+  statBox: { background: '#000000', border: '1px dotted rgba(255,255,255,0.35)', borderRadius: 10, padding: '14px 16px' },
   statVal: { fontSize: 24, fontWeight: 800, color: '#ffffff', letterSpacing: '-0.03em' },
-  statLbl: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#333', marginTop: 4 },
+  statLbl: { fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888', marginTop: 4 },
   orangeDot: { width: 6, height: 6, borderRadius: '50%', background: '#ff6b35', display: 'inline-block' },
 }
 
@@ -164,7 +164,7 @@ export default function WrappedPage() {
   )
 
   return (
-    <div style={S.page} className="grid-bg">
+    <div style={S.page} className="wrapped-bg">
       <style>{`
         @keyframes spin { to { transform: rotate(360deg) } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px) } to { opacity: 1; transform: translateY(0) } }
@@ -174,23 +174,23 @@ export default function WrappedPage() {
       {/* Navbar */}
       <nav style={S.nav}>
         <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none' }}>
-          <div style={{ width: 28, height: 28, background: '#080808', border: '1.5px solid #ff6b35', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div className="github-logo" style={{ width: 28, height: 28, background: '#080808', border: '1.5px solid #2a2a2a', borderRadius: 8, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#f0f0f0' }}>
   <GitHubIcon />
 </div>
             
           <span style={{ fontWeight: 700, fontSize: 14, color: '#f0f0f0', letterSpacing: '-0.02em' }}>GitHub Wrapped</span>
         </a>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <img src={data.user.avatar_url} alt="" style={{ width: 26, height: 26, borderRadius: '50%', border: '1.5px solid #222' }} />
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: '#555' }}>@{username}</span>
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#ff6b35', background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.2)', borderRadius: 5, padding: '2px 8px' }}>{year}</span>
+          <img src={data.user.avatar_url} alt="" style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #222' }} />
+          <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: '#888', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#ff6b35'} onMouseLeave={e => e.target.style.color = '#888'}>{username}</a>
+          <span className="badge">{year}</span>
         </div>
       </nav>
 
       {/* Tabs */}
       <div style={S.tabs}>
         {SLIDE_LABELS.map((label, i) => (
-          <button key={i} onClick={() => setSlide(i)} style={{ padding: '11px 18px', fontFamily: "'Syne', sans-serif", fontSize: 12, fontWeight: 600, color: slide === i ? '#ff6b35' : '#333', background: 'transparent', border: 'none', borderBottom: slide === i ? '2px solid #ff6b35' : '2px solid transparent', cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', marginBottom: -1 }}>
+          <button key={i} onClick={() => setSlide(i)} style={{ padding: '12px 18px', lineHeight: 1.35, fontFamily: "'Exo 2', sans-serif", fontSize: 12, fontWeight: 600, color: slide === i ? '#ff6b35' : '#888', background: 'transparent', border: 'none', borderBottom: slide === i ? '2px solid #ff6b35' : '2px solid transparent', cursor: 'pointer', transition: 'all 0.15s', whiteSpace: 'nowrap', marginBottom: -1 }}>
             {i + 1}. {label}
           </button>
         ))}
@@ -208,11 +208,11 @@ export default function WrappedPage() {
         </div>
 
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 20 }}>
-          <button onClick={() => setSlide(s => Math.max(0, s - 1))} disabled={slide === 0} style={{ background: 'transparent', border: '1px solid #1a1a1a', borderRadius: 8, padding: '8px 18px', color: slide === 0 ? '#222' : '#555', fontFamily: "'Syne', sans-serif", fontWeight: 600, fontSize: 12, cursor: slide === 0 ? 'not-allowed' : 'pointer' }}>
+          <button onClick={() => setSlide(s => Math.max(0, s - 1))} disabled={slide === 0} style={{ background: 'transparent', border: '1px solid #1a1a1a', borderRadius: 8, padding: '8px 18px', color: slide === 0 ? '#444' : '#888', fontFamily: "'Exo 2', sans-serif", fontWeight: 600, fontSize: 12, cursor: slide === 0 ? 'not-allowed' : 'pointer' }}>
             ← prev
           </button>
-          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#2a2a2a' }}>{slide + 1} / {totalSlides}</span>
-          <button onClick={() => setSlide(s => Math.min(totalSlides - 1, s + 1))} disabled={slide === totalSlides - 1} style={{ background: slide === totalSlides - 1 ? 'transparent' : '#ff6b35', border: '1px solid', borderColor: slide === totalSlides - 1 ? '#1a1a1a' : '#ff6b35', borderRadius: 8, padding: '8px 18px', color: slide === totalSlides - 1 ? '#222' : 'white', fontFamily: "'Syne', sans-serif", fontWeight: 700, fontSize: 12, cursor: slide === totalSlides - 1 ? 'not-allowed' : 'pointer' }}>
+          <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#555' }}>{slide + 1} / {totalSlides}</span>
+          <button onClick={() => setSlide(s => Math.min(totalSlides - 1, s + 1))} disabled={slide === totalSlides - 1} style={{ background: slide === totalSlides - 1 ? 'transparent' : '#ff6b35', border: '1px solid', borderColor: slide === totalSlides - 1 ? '#1a1a1a' : '#ff6b35', borderRadius: 8, padding: '8px 18px', color: slide === totalSlides - 1 ? '#444' : 'white', fontFamily: "'Exo 2', sans-serif", fontWeight: 700, fontSize: 12, cursor: slide === totalSlides - 1 ? 'not-allowed' : 'pointer' }}>
             next →
           </button>
         </div>
@@ -239,6 +239,9 @@ function Slide1({ stats: s }) {
       <div style={S.roast}>
         {s.commits > 500 ? 'you committed more than you communicated this year.' : s.commits > 100 ? 'solid year. not impressive. not embarrassing.' : s.commits < 20 ? 'this is a cry for help.' : 'you existed on github. that counts.'}
       </div>
+      <div style={{ marginTop: 24, paddingTop: 18, borderTop: '1px solid #141414', fontSize: 12, color: '#555', fontFamily: "'Space Mono', monospace", textAlign: 'center' }}>
+        Made with <span style={{ color: '#ff6b35' }}>❤</span> by Rhythm Pahwa
+      </div>
     </div>
   )
 }
@@ -250,13 +253,13 @@ function Slide2({ stats: s }) {
       <div style={S.eyebrow}><ClockIcon /> chaos hour · commit timing</div>
       <div style={S.label}>most chaotic commit hour</div>
       <div style={S.bigNum}>{s.chaoticLabel}</div>
-      <div style={S.subLabel}>{s.hourCount[s.chaoticHour]} commits at this hour</div>
+      <div style={{ ...S.subLabel, marginTop: 12 }}>{s.hourCount[s.chaoticHour]} commits at this hour</div>
       <div style={{ display: 'flex', gap: 2, alignItems: 'flex-end', height: 80, marginBottom: 10 }}>
         {s.hourCount.map((v, h) => (
           <div key={h} style={{ flex: 1, height: `${Math.max(3, Math.round(v / max * 76))}px`, background: h === s.chaoticHour ? '#ff6b35' : '#1a1a1a', borderRadius: '2px 2px 0 0' }} />
         ))}
       </div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#2a2a2a', marginBottom: 4 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#888', marginBottom: 4 }}>
         <span>12am</span><span>6am</span><span>12pm</span><span>6pm</span><span>11pm</span>
       </div>
       <div style={S.roast}>{s.vibeCheck}</div>
@@ -302,7 +305,7 @@ function Slide4({ stats: s }) {
       <div style={S.subLabel}>based on {s.commits} commit messages</div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 8 }}>
         {topWords.map(w => (
-          <div key={w} style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 6, padding: '4px 10px', fontFamily: "'Space Mono', monospace", fontSize: 11, color: '#444' }}>
+          <div key={w} style={{ background: '#000000', border: '1px solid #1a1a1a', borderRadius: 6, padding: '4px 10px', fontFamily: "'Space Mono', monospace", fontSize: 11, color: '#444' }}>
             {w} <span style={{ color: '#ff6b35' }}>×{s.msgWords[w]}</span>
           </div>
         ))}
@@ -321,8 +324,8 @@ function Slide5({ stats: s }) {
         {s.langData.slice(0, 5).map((l, i) => (
           <div key={l.name}>
             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 7 }}>
-              <span style={{ fontFamily: "'Syne', sans-serif", fontSize: 13, color: '#888', fontWeight: 600 }}>{l.name}</span>
-              <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#333' }}>{l.pct}%</span>
+              <span style={{ fontFamily: "'Exo 2', sans-serif", fontSize: 13, color: '#888', fontWeight: 600 }}>{l.name}</span>
+              <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888' }}>{l.pct}%</span>
             </div>
             <div style={{ height: 4, background: '#141414', borderRadius: 2, overflow: 'hidden' }}>
               <div style={{ width: `${l.pct}%`, height: '100%', background: COLORS[i], borderRadius: 2 }} />
@@ -331,11 +334,11 @@ function Slide5({ stats: s }) {
         ))}
       </div>
       {s.neverLearned.length > 0 && (
-        <div style={{ background: '#111', border: '1px solid #1a1a1a', borderRadius: 10, padding: '14px 16px', marginBottom: 4 }}>
+        <div style={{ background: '#000000', border: '1px solid #1a1a1a', borderRadius: 10, padding: '14px 16px', marginBottom: 4 }}>
           <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#ff6b35', marginBottom: 10, letterSpacing: '0.15em', textTransform: 'uppercase' }}>said you would learn this year</div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
             {s.neverLearned.map(l => (
-              <span key={l} style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: '#2a2a2a', textDecoration: 'line-through' }}>{l}</span>
+              <span key={l} style={{ fontFamily: "'Space Mono', monospace", fontSize: 11, color: '#888', textDecoration: 'line-through' }}>{l}</span>
             ))}
           </div>
         </div>
@@ -352,16 +355,16 @@ function Slide6({ stats: s, data, username }) {
     navigator.clipboard.writeText(text).then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
   }
   return (
-    <div style={{ background: '#0d0d0d', border: '1px solid #1a1a1a', borderRadius: 16, padding: '24px' }}>
+    <div style={{ background: '#000000', border: '1px solid #1a1a1a', borderRadius: 16, padding: '24px' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20, paddingBottom: 18, borderBottom: '1px solid #141414' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <img src={data.user.avatar_url} alt="" style={{ width: 42, height: 42, borderRadius: '50%', border: '2px solid #1a1a1a' }} />
           <div>
             <div style={{ fontWeight: 700, fontSize: 14, color: '#f0f0f0' }}>@{username}</div>
-            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#333', marginTop: 3 }}>{s.year} wrapped</div>
+            <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888', marginTop: 3 }}>{s.year} wrapped</div>
           </div>
         </div>
-        <div style={{ background: '#ff6b35', borderRadius: 6, padding: '4px 10px', fontSize: 10, fontWeight: 700, color: 'white', fontFamily: "'Syne', sans-serif", letterSpacing: '0.05em' }}>WRAPPED</div>
+        <div style={{ background: '#ff6b35', borderRadius: 6, padding: '4px 10px', fontSize: 10, fontWeight: 700, color: 'white', fontFamily: "'Exo 2', sans-serif", letterSpacing: '0.05em' }}>WRAPPED</div>
       </div>
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 8, marginBottom: 10 }}>
         {[['commits', s.commits], ['streak', `${s.longestStreak}d`], ['chaos hour', s.chaoticLabel], ['repos', s.repos]].map(([label, val]) => (
@@ -377,21 +380,21 @@ function Slide6({ stats: s, data, username }) {
         </div>
         <div>
           <div style={{ fontWeight: 700, fontSize: 13, color: '#f0f0f0' }}>{s.signatureMove}</div>
-          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#333', marginTop: 2 }}>signature move</div>
+          <div style={{ fontFamily: "'Space Mono', monospace", fontSize: 9, color: '#888', marginTop: 2 }}>signature move</div>
         </div>
       </div>
       <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', marginBottom: 20 }}>
         {s.langData.slice(0, 4).map((l, i) => (
-          <div key={l.name} style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#111', border: '1px solid #1a1a1a', borderRadius: 20, padding: '4px 10px' }}>
+          <div key={l.name} style={{ display: 'flex', alignItems: 'center', gap: 5, background: '#000000', border: '1px solid #1a1a1a', borderRadius: 20, padding: '4px 10px' }}>
             <div style={{ width: 5, height: 5, borderRadius: '50%', background: COLORS[i] }} />
             <span style={{ fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#555' }}>{l.name}</span>
           </div>
         ))}
       </div>
-      <button onClick={copyStats} style={{ width: '100%', background: copied ? 'rgba(74,222,128,0.06)' : 'transparent', border: `1px solid ${copied ? '#4ade80' : '#1a1a1a'}`, borderRadius: 8, padding: '11px 0', color: copied ? '#4ade80' : '#555', fontFamily: "'Syne', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', marginBottom: 10 }}>
+      <button onClick={copyStats} style={{ width: '100%', background: copied ? 'rgba(74,222,128,0.06)' : 'transparent', border: `1px solid ${copied ? '#4ade80' : '#1a1a1a'}`, borderRadius: 8, padding: '11px 0', color: copied ? '#4ade80' : '#555', fontFamily: "'Exo 2', sans-serif", fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.2s', marginBottom: 10 }}>
         {copied ? '✓ copied to clipboard' : 'copy my wrapped stats ↗'}
       </button>
-      <a href="/" style={{ display: 'block', textAlign: 'center', fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#2a2a2a', textDecoration: 'none' }}>← try another username</a>
+      <a href="/" style={{ display: 'block', textAlign: 'center', fontFamily: "'Space Mono', monospace", fontSize: 10, color: '#888', textDecoration: 'none' }}>← try another username</a>
     </div>
   )
 }

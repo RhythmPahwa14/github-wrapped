@@ -1,9 +1,9 @@
-import { Syne, Space_Mono } from 'next/font/google'
+import { Exo_2, Space_Mono } from 'next/font/google'
 import './globals.css'
 
-const syne = Syne({
+const exo2 = Exo_2({
   subsets: ['latin'],
-  variable: '--font-syne',
+  variable: '--font-exo2',
   weight: ['400', '600', '700', '800'],
 })
 
@@ -21,7 +21,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${syne.variable} ${spaceMono.variable}`}>
+      <body className={`${exo2.variable} ${spaceMono.variable}`}>
         {children}
       </body>
     </html>
