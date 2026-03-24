@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useParams, useSearchParams } from 'next/navigation'
+import { useParams, useRouter, useSearchParams } from 'next/navigation'
 
 function analyze(data) {
   const { commits, totalCommits, repos, yearRepos, langMap, prEvents, issueEvents, starEvents, year } = data
@@ -27,6 +27,11 @@ function analyze(data) {
   const fixScore = ['fix', 'bug', 'patch', 'error', 'typo', 'broken', 'revert', 'hotfix'].reduce((s, w) => s + (msgWords[w] || 0), 0)
   const addScore = ['add', 'feat', 'new', 'create', 'implement', 'initial'].reduce((s, w) => s + (msgWords[w] || 0), 0)
   const refScore = ['refactor', 'clean', 'update', 'rename', 'improve'].reduce((s, w) => s + (msgWords[w] || 0), 0)
+  
+  // Get primary language
+  const sortedLangs = Object.entries(langMap).sort((a, b) => b[1] - a[1])
+  const primaryLang = sortedLangs.length > 0 ? sortedLangs[0][0] : 'Code'
+  
   let signatureMove, signatureType, signatureRoast
   if (fixScore >= addScore && fixScore >= refScore) {
     signatureMove = 'The Bug Whisperer'
@@ -41,19 +46,77 @@ function analyze(data) {
     signatureType = 'refactor'
     signatureRoast = 'you did not build software. you reorganized it. the code does the same thing but now the folders spark joy.'
   }
-  const sortedLangs = Object.entries(langMap).sort((a, b) => b[1] - a[1]).slice(0, 6)
-  const totalBytes = sortedLangs.reduce((s, [, v]) => s + v, 0)
-  const langData = sortedLangs.map(([name, bytes]) => ({ name, pct: Math.round(bytes / totalBytes * 100) }))
+  
+  const sortedLangsForDisplay = sortedLangs.slice(0, 6)
+  const totalBytes = sortedLangsForDisplay.reduce((s, [, v]) => s + v, 0)
+  const langData = sortedLangsForDisplay.map(([name, bytes]) => ({ name, pct: Math.round(bytes / totalBytes * 100) }))
   const neverLearned = ['Rust', 'Go', 'Haskell', 'Elixir', 'Kotlin', 'Scala', 'TypeScript', 'Zig'].filter(l => !langMap[l]).slice(0, 3)
+  
   const hourLabel = h => h === 0 ? '12am' : h < 12 ? `${h}am` : h === 12 ? '12pm' : `${h - 12}pm`
-  const vibeCheck = chaoticHour >= 0 && chaoticHour <= 5 ? 'you code at night. you are the bug.' :
-    chaoticHour >= 6 && chaoticHour <= 9 ? 'morning commits. suspiciously productive.' :
-    chaoticHour >= 22 ? 'late night grind. classic.' : 'peak hours. you have a schedule. scary.'
+  
+  // Multiple vibe checks
+  const vibeChecks = [
+    { hour: [0, 5], msg: 'you code at night. you are the bug.' },
+    { hour: [6, 9], msg: 'morning commits. suspiciously productive.' },
+    { hour: [22, 23], msg: 'late night grind. classic.' },
+    { hour: [10, 12], msg: 'rising with the sun. or rising with coffee.' },
+    { hour: [13, 17], msg: 'afternoon coder. work hours exist for you.' },
+    { hour: [18, 21], msg: 'evening grind. the day shift was not enough.' }
+  ]
+  const vibeCheck = vibeChecks.find(v => chaoticHour >= v.hour[0] && chaoticHour <= v.hour[1])?.msg || 'peak hours. you have a schedule. scary.'
+  
+  // Multiple overview captions based on commits and language
+  const getOverviewRoast = () => {
+    if (totalCommits > 1000) return `${totalCommits} commits. that is not a hobby. that is a lifestyle.`
+    if (totalCommits > 500) return `you committed more than you communicated this year. ${primaryLang} >> English`
+    if (totalCommits > 300) return `solid year. ${primaryLang} in your bones now.`
+    if (totalCommits > 100) return `solid year. not impressive. not embarrassing.`
+    if (totalCommits > 50) return `you showed up. that counts.`
+    if (totalCommits < 20) return `this is a cry for help. or you just got started.`
+    return `you existed on github. that counts.`
+  }
+  
+  // Multiple streak captions based on language
+  const getStreakRoast = () => {
+    const langMentions = {
+      'JavaScript': ['you and javascript. an endless story of debugging.', 'js never stops. neither did you.', 'javascript: the language that keeps you coding 24/7.'],
+      'TypeScript': ['typing your way to consistency. respect.', 'types > no types. you evolved.', 'typescript streaks hit different. static safety paying off.'],
+      'Python': ['python glazer confirmed.', 'python made you unstoppable.', 'pythonic consistency achieved.'],
+      'Go': ['rust, no. golang, yes. the streak speaks.', 'go fast and break nothing. you did both.'],
+      'Rust': ['fighting the borrow checker daily. respect earned.', 'rust streak = masochist confirmed.', 'the borrow checker approved this streak.'],
+      'Java': ['java != javascript. commitment level: enterprise.', 'verbosity did not stop you.'],
+      'React': ['components on components. the streak is real.', 'react render cycles = your commit cycles.'],
+      'Vue': ['vue js gentle approach paid off.', 'the progressive streak.']
+    }
+    
+    const langRoasts = langMentions[primaryLang] || [
+      `you committed to ${primaryLang}. literally.`,
+      `${primaryLang} developer. the streak proves it.`,
+      `${primaryLang} > excuses.`
+    ]
+    
+    if (longestStreak >= 60) {
+      return langRoasts[Math.floor(Math.random() * langRoasts.length)] + ` two months straight. superhuman or no life. probably both.`
+    }
+    if (longestStreak >= 30) {
+      return langRoasts[Math.floor(Math.random() * langRoasts.length)] + ` thirty days of consistency.`
+    }
+    if (longestStreak >= 14) {
+      return langRoasts[Math.floor(Math.random() * langRoasts.length)] + ` two solid weeks. then something happened.`
+    }
+    if (longestStreak >= 7) {
+      return langRoasts[Math.floor(Math.random() * langRoasts.length)] + ` a full week. you peaked.`
+    }
+    return `the streak was short. the rest of the year was not.`
+  }
+  
   return {
     year, commits: totalCommits || commits.length, repos, yearRepos, prEvents, issueEvents, starEvents,
     chaoticHour, chaoticLabel: hourLabel(chaoticHour), vibeCheck,
     longestStreak, signatureMove, signatureType, signatureRoast,
-    langData, neverLearned, hourCount, msgWords,
+    langData, neverLearned, hourCount, msgWords, primaryLang,
+    overviewRoast: getOverviewRoast(),
+    streakRoast: getStreakRoast()
   }
 }
 
@@ -126,12 +189,19 @@ const S = {
 
 export default function WrappedPage() {
   const { username } = useParams()
+  const router = useRouter()
   const searchParams = useSearchParams()
   const year = searchParams.get('year') || new Date().getFullYear().toString()
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: 6 }, (_, i) => String(currentYear - i))
   const [data, setData] = useState(null)
   const [stats, setStats] = useState(null)
   const [error, setError] = useState('')
   const [slide, setSlide] = useState(0)
+
+  const handleYearChange = (nextYear) => {
+    router.push(`/wrapped/${username}?year=${nextYear}`)
+  }
 
   useEffect(() => {
     fetch(`/api/github?username=${username}&year=${year}`)
@@ -183,7 +253,27 @@ export default function WrappedPage() {
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <img src={data.user.avatar_url} alt="" style={{ width: 32, height: 32, borderRadius: '50%', border: '1.5px solid #222' }} />
           <a href={`https://github.com/${username}`} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Space Mono', monospace", fontSize: 12, color: '#888', textDecoration: 'none', cursor: 'pointer', transition: 'color 0.2s' }} onMouseEnter={e => e.target.style.color = '#ff6b35'} onMouseLeave={e => e.target.style.color = '#888'}>{username}</a>
-          <span className="badge">{year}</span>
+          <select
+            value={year}
+            onChange={e => handleYearChange(e.target.value)}
+            style={{
+              background: '#000000',
+              border: '1px solid #1a1a1a',
+              borderRadius: 8,
+              color: '#ff6b35',
+              fontFamily: "'Space Mono', monospace",
+              fontSize: 12,
+              padding: '6px 10px',
+              outline: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            {years.map(y => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
         </div>
       </nav>
 
@@ -237,7 +327,7 @@ function Slide1({ stats: s }) {
         ))}
       </div>
       <div style={S.roast}>
-        {s.commits > 500 ? 'you committed more than you communicated this year.' : s.commits > 100 ? 'solid year. not impressive. not embarrassing.' : s.commits < 20 ? 'this is a cry for help.' : 'you existed on github. that counts.'}
+        {s.overviewRoast}
       </div>
     </div>
   )
@@ -278,7 +368,7 @@ function Slide3({ stats: s }) {
         ))}
       </div>
       <div style={S.roast}>
-        {s.longestStreak >= 30 ? 'thirty days straight. either very focused or completely unemployable.' : s.longestStreak >= 14 ? 'two solid weeks. then something happened.' : s.longestStreak >= 7 ? 'a full week. you peaked.' : 'the streak was short. the rest of the year was not.'}
+        {s.streakRoast}
       </div>
     </div>
   )

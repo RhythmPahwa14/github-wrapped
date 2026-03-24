@@ -27,10 +27,10 @@ export async function GET(request) {
     if (!userRes.ok) return NextResponse.json({ error: 'user not found' }, { status: 404 })
     const user = await userRes.json()
 
-    // fetch events for hour analysis and commit messages
+    // fetch events for hour analysis and commit messages (fetch 30 pages for comprehensive data)
     let allEvents = []
     try {
-      for (let page = 1; page <= 3; page++) {
+      for (let page = 1; page <= 30; page++) {
         const r = await fetch(`https://api.github.com/users/${username}/events/public?per_page=100&page=${page}`, { headers })
         if (!r.ok) break
         const ev = await r.json()
@@ -115,6 +115,54 @@ export async function GET(request) {
       }))
     } catch (e) {}
 
+    // fetch PR count via search API for accuracy
+    let prEvents = yearEvents.filter(e => e.type === 'PullRequestEvent').length
+    let starEvents = yearEvents.filter(e => e.type === 'WatchEvent').length
+
+    try {
+      const prRes = await fetch(
+        `https://api.github.com/search/issues?q=author:${username}+type:pr+created:${year}-01-01..${year}-12-31&per_page=1`,
+        { headers }
+      )
+      if (prRes.ok) {
+        const prData = await prRes.json()
+        if (prData.total_count > 0) prEvents = prData.total_count
+      }
+    } catch (e) {}
+
+    // fetch starred repos and count by starred_at year (works across all years)
+    try {
+      const starHeaders = {
+        ...headers,
+        'Accept': 'application/vnd.github.v3.star+json',
+      }
+
+      let starredCountForYear = 0
+      for (let page = 1; page <= 20; page++) {
+        const starredRes = await fetch(
+          `https://api.github.com/users/${username}/starred?per_page=100&page=${page}&sort=created&direction=desc`,
+          { headers: starHeaders }
+        )
+        if (!starredRes.ok) break
+
+        const starred = await starredRes.json()
+        if (!Array.isArray(starred) || starred.length === 0) break
+
+        for (const item of starred) {
+          const starredAt = item?.starred_at
+          if (!starredAt) continue
+
+          const starredYear = new Date(starredAt).getFullYear()
+          if (starredYear === year) starredCountForYear++
+        }
+
+        const lastStarredAt = starred[starred.length - 1]?.starred_at
+        if (lastStarredAt && new Date(lastStarredAt).getFullYear() < year) break
+      }
+
+      starEvents = starredCountForYear
+    } catch (e) {}
+
     return NextResponse.json({
       user,
       commits,
@@ -122,9 +170,9 @@ export async function GET(request) {
       repos: repos.length,
       yearRepos: repos.filter(r => new Date(r.created_at).getFullYear() === year).length,
       langMap,
-      prEvents: yearEvents.filter(e => e.type === 'PullRequestEvent').length,
+      prEvents,
       issueEvents: yearEvents.filter(e => e.type === 'IssuesEvent').length,
-      starEvents: yearEvents.filter(e => e.type === 'WatchEvent').length,
+      starEvents,
       year,
     })
 
